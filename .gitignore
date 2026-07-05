@@ -1,0 +1,15 @@
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# jupyter
+.ipynb_checkpoints/
+
+# artifacts these notebooks would produce
+data/
+snapshots/
+reocr_output/
+*.joblib
+*.bin
+*.csv
