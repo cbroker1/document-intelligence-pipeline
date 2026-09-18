@@ -1,6 +1,6 @@
 # Large-Scale Document Intelligence Pipeline
 
-End-to-end **local** OCR, NLP, and machine learning system for classifying **250,000+ scanned unclassified records** into 10 business-defined categories — built in a previous federal data science role, and released here as sanitized working notebooks.
+End-to-end **local** OCR, NLP, and machine learning system for classifying **250,000+ scanned unclassified records** across ~20 business-defined document classes — built as a contractor to a U.S. federal agency, and released here as sanitized working notebooks.
 
 Full case study: **[cbroker1.github.io/projects/document-intelligence-pipeline](https://cbroker1.github.io/projects/document-intelligence-pipeline)**
 
@@ -10,7 +10,9 @@ Full case study: **[cbroker1.github.io/projects/document-intelligence-pipeline](
 
 ## The problem
 
-A repository of 250,000+ scanned records accumulated over decades — typewritten pages digitized long ago through modern computer-generated PDFs — needed each record classified into one of 10 business categories. A fully manual pass would have consumed an enormous amount of administrator time. The system reframed the job from *automate the decision* to **rank the review**: score every document with every category model, and let humans work a confidence-sorted queue instead of an alphabetized pile.
+A repository of 250,000+ scanned records accumulated over decades — typewritten pages digitized long ago through modern computer-generated PDFs — needed each record sorted into one of ~20 business-defined document classes. Administrators had to verify and extract key values from every document by hand, with different fields and rules per class, so working an unsorted pile meant constant switching between classes. A fully manual pass would have consumed an enormous amount of administrator time. The system reframed the job from *automate the decision* to **rank the review**: score every document with every category model, and let humans work a confidence-sorted queue one class at a time instead of an alphabetized pile.
+
+About half the classes had enough filename-derived labels to model reliably; those 10 are the core of this repository. The remaining ~10 low-data classes ran through the same OCR and scoring pipeline with baseline models, landed in the queue as *unknown*, and were set up so that admin decisions during daily review would become their training data for a later modeling round.
 
 Everything ran locally on workstation hardware. The records were sensitive but unclassified; no cloud OCR, hosted models, or external APIs were an option.
 
@@ -18,7 +20,7 @@ Everything ran locally on workstation hardware. The records were sensitive but u
 
 ![Pipeline diagram: scanned records → local OCR → OCR quality signal → 10 Logistic Regression + 10 RoBERTa classifiers → batch inference → scored review queue → human review](figures/pipeline-diagram.svg)
 
-Every document was scored by **20 classifiers** — 10 scikit-learn n-gram Logistic Regression models and 10 fine-tuned RoBERTa models, one of each per category — with the document's OCR confidence carried alongside every score as a data-quality signal.
+Every document was scored by **20 classifiers** — 10 scikit-learn n-gram Logistic Regression models and 10 fine-tuned RoBERTa models, one of each per modeled class — with the document's OCR confidence carried alongside every score as a data-quality signal.
 
 ## How it worked
 
